@@ -1,46 +1,44 @@
-# Comprehensive Social Networking Dataset
+# Comprehensive Datasets for Social Networking
 
-## Description
-This dataset includes various types of data related to social networking, including PDF Data, DOC Data, Tabular Data, Graph Data, Time-Series Data, Programming Data, Audio Data, and Image Data.
+## PDF Data
+### Repositories
+1. **[VisRAG-datasets](https://github.com/cagey-squirrel/VisRAG-datasets)**
+   - Contains images and textual annotations used for testing in the VisRAG paper.
+   - Language: None specified
 
-## Contents
+2. **[StudentDepressionDatasetStudy](https://github.com/AshleyKeliane/StudentDepressionDatasetStudy)**
+   - Leveraged R to study a large dataset of 1,400+ students with diagnosed depression. The PDF provides details about the analysis.
+   - Language: R
 
-### PDF Data
-- **Research Papers and Reports**
-  - Example: Research paper on social network analysis in PDF format.
-  - Source: [Research Paper on Social Network Analysis](https://example.com/research-paper.pdf)
+3. **[datasmryzr](https://github.com/kristyhoran/datasmryzr)**
+   - Summarizes pathogen genomics datasets - generating a standalone HTML and PDF report.
+   - Language: Python
 
-### DOC Data
-- **Documentation and Project Reports**
-  - Example: Project report on social networking analysis in DOC format.
-  - Source: [Project Report on Social Network Analysis](https://example.com/project-report.doc)
+4. **[DataExploer](https://github.com/Seifeddine-bd/DataExploer)**
+   - A web application for in-depth exploratory data analysis (EDA), including generating detailed PDF reports.
+   - Language: Python
 
-### Tabular Data
-- **CSV Files**
-  - Example: Social network user data in CSV format.
-  - Source: [Social Network User Data](https://example.com/user-data.csv)
+5. **[DATASET](https://github.com/zhangyilin-bit/DATASET)**
+   - Converts PDF to PNG in large quantities.
+   - Language: Python
 
-### Graph Data
-- **GraphML and GEXF Files**
-  - Example: Social network graph data in GraphML format.
-  - Source: [Social Network Graph Data](https://example.com/network-graph.graphml)
+## DOC Data
+### Repositories
+1. **[Quantum_Docking_Dataset](https://github.com/qiqi-xingyi/Quantum_Docking_Dataset)**
+   - Quantum docking dataset.
+   - Language: OpenQASM
 
-### Time-Series Data
-- **Time-Series Data in CSV Format**
-  - Example: User activity over time in CSV format.
-  - Source: [User Activity Time-Series Data](https://example.com/user-activity.csv)
+2. **[dataset-api-docs](https://github.com/Geosphere-Austria/dataset-api-docs)**
+   - Documentation source for the dataset API provided by Geosphere Austria.
+   - Language: Python
 
-### Programming Data
-- **Source Code and Scripts**
-  - Example: Python scripts for social network analysis.
-  - Source: [Social Network Analysis Scripts](https://github.com/example/social-network-analysis)
+3. **[doc-survey-monitoring-quick-start](https://github.com/gbif/doc-survey-monitoring-quick-start)**
+   - Guides GBIF data publishers through updating datasets using the Humboldt extension for ecological inventories.
+   - Language: HTML
 
-### Audio Data
-- **Audio Files**
-  - Example: Audio discussions on social network topics in MP3 format.
-  - Source: [Audio Discussions on Social Network Topics](https://example.com/discussions.mp3)
-
-### Image Data
-- **Image Files**
-  - Example: Profile pictures and post images in JPEG format.
+## Tabular Data
+### Repositories
+1. **[LAMDA-TALENT](https://github.com/qile2000/LAMDA-TALENT)**
+   - Toolkit and benchmark for tabular data learning, featuring 30 deep methods, more than 10 classical methods, and 300 diverse tabular datasets.
+   - Language: Python
 Feel free to explore these links for additional repositories and datasets. If you need further assistance or specific data, let me know!
