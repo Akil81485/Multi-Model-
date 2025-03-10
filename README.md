@@ -1,6 +1,6 @@
 **Multi-Modal Data Processing Pipeline Overview**
 
-### **Step-by-Step Data Pipeline with Inputs and Outputs**
+### **Step Data Pipeline with Inputs and Outputs**
 
 #### **1. Data Ingestion**  
 **Description**: Load raw data files from different sources.  
