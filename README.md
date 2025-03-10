@@ -37,6 +37,8 @@ file_path,file_type
 /path/to/file7.jpg,image
 ```
 
+**Output**: A dataset containing raw data files from various sources.
+
 #### 2. Data Preprocessing
 
 Create preprocessing functions for each data type.
@@ -55,6 +57,16 @@ def preprocess_pdf(pdf_file_path):
     return features
 ```
 
+**Output**: Dictionary with features extracted from the PDF.
+
+```python
+{
+    'num_pages': 10,
+    'first_page_text': 'Sample text from the first page...',
+    ...
+}
+```
+
 ##### DOC Data Preprocessing
 
 ```python name=doc_preprocessing.py
@@ -68,18 +80,47 @@ def preprocess_doc(doc_file_path):
     return features
 ```
 
+**Output**: Dictionary with features extracted from the DOC.
+
+```python
+{
+    'num_paragraphs': 5,
+    'first_paragraph_text': 'This is the first paragraph...',
+    ...
+}
+```
+
 ##### Tabular Data Preprocessing
 
 ```python name=tabular_preprocessing.py
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 
 def preprocess_tabular(csv_file_path):
     df = pd.read_csv(csv_file_path)
-    features = {}
-    features['num_rows'] = len(df)
-    features['num_columns'] = len(df.columns)
-    features['column_names'] = list(df.columns)
-    return features
+    # Handle missing values
+    df = df.fillna(df.mean())
+    # Normalize numerical features
+    scaler = MinMaxScaler()
+    numerical_features = df.select_dtypes(include=['int64', 'float64']).columns
+    df[numerical_features] = scaler.fit_transform(df[numerical_features])
+    # Encode categorical variables
+    encoder = LabelEncoder()
+    categorical_features = df.select_dtypes(include=['object']).columns
+    for col in categorical_features:
+        df[col] = encoder.fit_transform(df[col])
+    return df
+```
+
+**Output**: Preprocessed DataFrame with normalized and encoded features.
+
+```python
+{
+    'num_rows': 1000,
+    'num_columns': 10,
+    'column_names': ['col1', 'col2', 'col3', ...],
+    ...
+}
 ```
 
 ##### Graph Data Preprocessing
@@ -96,6 +137,17 @@ def preprocess_graph(graph_file_path):
     return features
 ```
 
+**Output**: Dictionary with features extracted from the graph.
+
+```python
+{
+    'num_nodes': 100,
+    'num_edges': 200,
+    'average_clustering': 0.05,
+    ...
+}
+```
+
 ##### Time-Series Data Preprocessing
 
 ```python name=time_series_preprocessing.py
@@ -103,11 +155,25 @@ import pandas as pd
 
 def preprocess_time_series(csv_file_path):
     df = pd.read_csv(csv_file_path, parse_dates=True, index_col=0)
-    features = {}
-    features['num_datapoints'] = len(df)
-    features['start_date'] = df.index.min()
-    features['end_date'] = df.index.max()
-    return features
+    # Handle missing values
+    df = df.fillna(method='ffill').fillna(method='bfill')
+    # Resample time series data
+    df = df.resample('D').mean()
+    # Feature engineering
+    df['rolling_mean'] = df['value'].rolling(window=7).mean()
+    df['difference'] = df['value'].diff()
+    return df
+```
+
+**Output**: Preprocessed DataFrame with time-series features.
+
+```python
+{
+    'num_datapoints': 365,
+    'start_date': '2022-01-01',
+    'end_date': '2022-12-31',
+    ...
+}
 ```
 
 ##### Audio Data Preprocessing
@@ -116,11 +182,21 @@ def preprocess_time_series(csv_file_path):
 import librosa
 
 def preprocess_audio(audio_file_path):
-    y, sr = librosa.load(audio_file_path)
-    features = {}
-    features['duration'] = librosa.get_duration(y=y, sr=sr)
-    features['tempo'] = librosa.beat.tempo(y=y, sr=sr)[0]
-    return features
+    y, sr = librosa.load(audio_file_path, sr=22050)
+    # Extract MFCC features
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+    # Normalize features
+    mfccs = (mfccs - np.mean(mfccs)) / np.std(mfccs)
+    return mfccs
+```
+
+**Output**: MFCC features extracted and normalized.
+
+```python
+{
+    'mfccs': array([[...], [...], ...]),
+    ...
+}
 ```
 
 ##### Image Data Preprocessing
@@ -131,12 +207,21 @@ import numpy as np
 
 def preprocess_image(image_file_path):
     image = cv2.imread(image_file_path)
-    features = {}
-    features['image_shape'] = image.shape
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    features['mean_intensity'] = np.mean(gray_image)
-    features['variance_intensity'] = np.var(gray_image)
-    return features
+    # Resize image
+    image = cv2.resize(image, (224, 224))
+    # Normalize pixel values
+    image = image / 255.0
+    return image
+```
+
+**Output**: Preprocessed image data.
+
+```python
+{
+    'image_shape': (224, 224, 3),
+    'normalized_image': array([[[...], [...], ...]]),
+    ...
+}
 ```
 
 #### 3. Feature Extraction
@@ -192,6 +277,22 @@ if __name__ == '__main__':
     print(f"Processed data saved to {output_path}")
 ```
 
+**Output**: DataFrame with combined features from all data types.
+
+```python
+{
+    'file_path': '/path/to/file1.pdf',
+    'file_type': 'pdf',
+    'num_pages': 10,
+    'first_page_text': 'Sample text from the first page...',
+    ...
+    'image_shape': (224, 224, 3),
+    'mean_intensity': 0.485,
+    'variance_intensity': 0.123,
+    ...
+}
+```
+
 #### 4. Model Training and Evaluation
 
 Train and evaluate machine learning models using the processed dataset.
@@ -224,6 +325,24 @@ if __name__ == '__main__':
     model = train_model(processed_data_path)
 ```
 
+**Output**: Trained model and evaluation report.
+
+```plaintext
+Classification Report:
+              precision    recall  f1-score   support
+
+    Class A       0.95      0.94      0.94       100
+    Class B       0.90      0.91      0.90       100
+    Class C       0.92      0.93      0.92       100
+
+    accuracy                           0.92       300
+    macro avg       0.92      0.92      0.92       300
+ weighted avg       0.92      0.92      0.92       300
+
+Model File:
+trained_model.pkl
+```
+
 #### 5. Real-Time Data Processing
 
 Process real-time data inputs and make predictions using the trained model.
@@ -246,6 +365,19 @@ if __name__ == '__main__':
     file_type = 'pdf'
     result = process_real_time_data(file_path, file_type)
     print(result)
+```
+
+**Output**: Dictionary with predictions and features for real-time data.
+
+```python
+{
+    'file_path': '/path/to/real_time_file.pdf',
+    'file_type': 'pdf',
+    'num_pages': 10,
+    'first_page_text': 'Sample text from the first page...',
+    'prediction': 'Class A',
+    ...
+}
 ```
 
 ### Summary
